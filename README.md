@@ -52,7 +52,7 @@ git clone https://github.com/Panji-Kusumah/Video_Belajar.git
 Masuk ke folder project:
 
 ```bash
-cd videobelajar
+cd Vcourse
 ```
 
 Install dependencies:
