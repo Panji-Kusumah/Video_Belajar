@@ -4,14 +4,12 @@ const Register = () => {
     return (
         <div className="min-h-screen bg-bg-cream flex items-center justify-center p-6">
             <div className="w-full max-w-130">
-                {/* Logo */}
                 <div className="text-center mb-8">
                     <Link to="/" className="text-2xl font-black inline-block">
                         <span className="text-secondary">video</span>
                         <span className="text-accent">belajar</span>
                     </Link>
                 </div>
-                {/* Card */}
                 <div className="bg-white rounded-2xl p-10 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
                     <div className="text-center mb-8">
                         <h1 className="text-2xl font-black text-gray-900 mb-2">Pendaftaran Akun</h1>

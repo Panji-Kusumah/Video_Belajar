@@ -1,29 +1,40 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (email && password) {
+            localStorage.setItem('user', JSON.stringify({ email, name: 'Margonda' }));
+            navigate('/');
+        }
+    };
     return (
         <div className="min-h-screen bg-bg-cream flex items-center justify-center p-6">
             <div className="w-full max-w-130">
-                {/* Logo */}
                 <div className="text-center mb-8">
                     <Link to="/" className="text-2xl font-black inline-block">
                         <span className="text-secondary">video</span>
                         <span className="text-accent">belajar</span>
                     </Link>
                 </div>
-                {/* Card */}
                 <div className="bg-white rounded-2xl p-10 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
                     <div className="text-center mb-8">
                         <h1 className="text-2xl font-black text-gray-900 mb-2">Masuk ke Akun</h1>
                         <p className="text-sm text-gray-600">Yuk, lanjutin belajarmu di videobelajar.</p>
                     </div>
-                    <form className="flex flex-col gap-5">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
                                 E-Mail <span className="text-accent">*</span>
                             </label>
                             <input
                                 type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Masukkan email kamu"
                                 className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm font-normal focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(60,191,76,0.1)] placeholder:text-gray-400"
                                 required
@@ -36,6 +47,8 @@ const Login = () => {
                             <div className="relative">
                                 <input
                                     type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Masukkan kata sandi"
                                     className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm font-normal focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(60,191,76,0.1)] placeholder:text-gray-400 pr-12"
                                     required
