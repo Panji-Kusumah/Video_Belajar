@@ -34,7 +34,7 @@ const Sidebar = () => {
                 ))}
             </nav>
             <div className="p-4 border-t border-gray-100 text-xs text-gray-400">
-                © 2024 Admin Panel
+                © Code by choice, not by force
             </div>
         </aside>
     );

@@ -1,15 +1,21 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import useAuthStore from '../../store/useAuthStore';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const login = useAuthStore((state) => state.login);
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (email && password) {
-            localStorage.setItem('user', JSON.stringify({ email, name: 'Margonda' }));
+        setErrorMessage('');
+        const result = login(email, password);
+        if (result.success) {
             navigate('/');
+        } else {
+            setErrorMessage(result.message);
         }
     };
     return (
@@ -27,6 +33,12 @@ const Login = () => {
                         <p className="text-sm text-gray-600">Yuk, lanjutin belajarmu di videobelajar.</p>
                     </div>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                        {/* Pesan Error */}
+                        {errorMessage && (
+                            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
+                                {errorMessage}
+                            </div>
+                        )}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
                                 E-Mail <span className="text-accent">*</span>

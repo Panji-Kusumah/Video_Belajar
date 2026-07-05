@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import useAuthStore from '../../store/useAuthStore';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        return !!localStorage.getItem('user');
-    });
     const navigate = useNavigate();
+    const user = useAuthStore((state) => state.user);
+    const logout = useAuthStore((state) => state.logout);
+
     const handleLogout = () => {
-        localStorage.removeItem('user');
-        setIsLoggedIn(false);
+        logout(); 
         setIsOpen(false);
         navigate('/login');
     };
+
     return (
         <nav className="bg-white shadow-sm sticky top-0 z-100">
             <div className="max-w-300 mx-auto px-6">
@@ -25,9 +26,9 @@ const Navbar = () => {
                         <a href="#" className="text-base font-normal text-gray-900 hover:text-primary transition-colors">
                             Kategori
                         </a>
-                        {!isLoggedIn ? (
-                            <Link 
-                                to="/login" 
+                        {!user ? (
+                            <Link
+                                to="/login"
                                 className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary-dark transition-all"
                             >
                                 Login
@@ -47,7 +48,8 @@ const Navbar = () => {
                                 {isOpen && (
                                     <div className="absolute top-[calc(100%+10px)] right-0 w-50 bg-white rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-200 overflow-hidden z-1000">
                                         <div className="p-4 text-sm text-gray-900 border-b border-gray-200">
-                                            Hai, <strong className="text-primary">Margonda</strong>
+                                            {/* Tampilkan nama user dari store */}
+                                            Hai, <strong className="text-primary">{user.name || 'User'}</strong>
                                         </div>
                                         <ul className="py-2">
                                             <li>

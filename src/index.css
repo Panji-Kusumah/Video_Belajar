@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 @import "tailwindcss";
 @theme {
-    /* Custom Colors */
     --color-primary: #3CBF4C;
     --color-primary-dark: #2E9E3C;
     --color-primary-light: #E8F8EA;

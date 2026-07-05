@@ -1,6 +1,42 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuthStore from '../../store/useAuthStore';
 
 const Register = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: ''
+    });
+    const [message, setMessage] = useState({ text: '', type: '' });
+    const navigate = useNavigate();
+    const register = useAuthStore((state) => state.register);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setMessage({ text: '', type: '' });
+
+        if (formData.password !== formData.confirmPassword) {
+            setMessage({ text: 'Konfirmasi kata sandi tidak cocok!', type: 'error' });
+            return;
+        }
+
+        const result = register(formData);
+
+        if (result.success) {
+            // PERBAIKAN: Arahkan ke halaman login, bukan ke home ('/')
+            navigate('/login');
+        } else {
+            setMessage({ text: result.message, type: 'error' });
+        }
+    };
+
     return (
         <div className="min-h-screen bg-bg-cream flex items-center justify-center p-6">
             <div className="w-full max-w-130">
@@ -15,13 +51,25 @@ const Register = () => {
                         <h1 className="text-2xl font-black text-gray-900 mb-2">Pendaftaran Akun</h1>
                         <p className="text-sm text-gray-600">Yuk, daftarkan akunmu sekarang juga!</p>
                     </div>
-                    <form className="flex flex-col gap-5">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                        {/* Pesan Error/Success */}
+                        {message.text && (
+                            <div className={`border text-sm px-4 py-3 rounded-xl ${message.type === 'error'
+                                    ? 'bg-red-50 border-red-200 text-red-600'
+                                    : 'bg-green-50 border-green-200 text-green-600'
+                                }`}>
+                                {message.text}
+                            </div>
+                        )}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
                                 Nama Lengkap <span className="text-accent">*</span>
                             </label>
                             <input
                                 type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
                                 placeholder="Masukkan nama lengkap kamu"
                                 className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm font-normal focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(60,191,76,0.1)] placeholder:text-gray-400"
                                 required
@@ -33,6 +81,9 @@ const Register = () => {
                             </label>
                             <input
                                 type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
                                 placeholder="Masukkan email kamu"
                                 className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm font-normal focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(60,191,76,0.1)] placeholder:text-gray-400"
                                 required
@@ -52,6 +103,9 @@ const Register = () => {
                                 </div>
                                 <input
                                     type="tel"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
                                     placeholder="81234567890"
                                     className="flex-1 px-4 py-3.5 border border-gray-200 rounded-xl text-sm font-normal focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(60,191,76,0.1)] placeholder:text-gray-400"
                                     required
@@ -65,6 +119,9 @@ const Register = () => {
                             <div className="relative">
                                 <input
                                     type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
                                     placeholder="Buat kata sandi"
                                     className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm font-normal focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(60,191,76,0.1)] placeholder:text-gray-400 pr-12"
                                     required
@@ -87,6 +144,9 @@ const Register = () => {
                             <div className="relative">
                                 <input
                                     type="password"
+                                    name="confirmPassword"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
                                     placeholder="Konfirmasi kata sandi"
                                     className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm font-normal focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_rgba(60,191,76,0.1)] placeholder:text-gray-400 pr-12"
                                     required
