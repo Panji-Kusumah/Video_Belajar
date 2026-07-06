@@ -1,7 +1,7 @@
 import Navbar from '../../components/layout/Navbar';
 import Hero from '../../components/ui/Hero';
 import CourseSection from '../../components/ui/CourseSection';
-import NewsLetter from '../../components/ui/NewsLetter';
+import Newsletter from '../../components/ui/Newsletter';
 import Footer from '../../components/layout/Footer';
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
             <Navbar />
             <Hero />
             <CourseSection />
-            <NewsLetter />
+            <Newsletter />
             <Footer />
         </div>
     );

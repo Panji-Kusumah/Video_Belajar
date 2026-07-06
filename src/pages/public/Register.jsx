@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash, FaChevronDown } from 'react-icons/fa6';
 import useAuthStore from '../../store/useAuthStore';
 
 const Register = () => {
@@ -10,33 +11,28 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [message, setMessage] = useState({ text: '', type: '' });
     const navigate = useNavigate();
     const register = useAuthStore((state) => state.register);
-
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setMessage({ text: '', type: '' });
-
         if (formData.password !== formData.confirmPassword) {
             setMessage({ text: 'Konfirmasi kata sandi tidak cocok!', type: 'error' });
             return;
         }
-
         const result = register(formData);
-
         if (result.success) {
-            // PERBAIKAN: Arahkan ke halaman login, bukan ke home ('/')
             navigate('/login');
         } else {
             setMessage({ text: result.message, type: 'error' });
         }
     };
-
     return (
         <div className="min-h-screen bg-bg-cream flex items-center justify-center p-6">
             <div className="w-full max-w-130">
@@ -52,7 +48,6 @@ const Register = () => {
                         <p className="text-sm text-gray-600">Yuk, daftarkan akunmu sekarang juga!</p>
                     </div>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                        {/* Pesan Error/Success */}
                         {message.text && (
                             <div className={`border text-sm px-4 py-3 rounded-xl ${message.type === 'error'
                                     ? 'bg-red-50 border-red-200 text-red-600'
@@ -97,9 +92,7 @@ const Register = () => {
                                 <div className="flex items-center gap-2 px-4 py-3.5 border border-gray-200 rounded-xl bg-gray-100 font-bold text-sm text-gray-900 whitespace-nowrap cursor-pointer hover:border-primary hover:bg-primary-light transition-colors">
                                     <img src="https://flagcdn.com/w40/id.png" alt="Indonesia" className="w-6 h-4 object-cover rounded-sm" />
                                     <span>+62</span>
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-600">
-                                        <path d="M6 9l6 6 6-6" />
-                                    </svg>
+                                    <FaChevronDown className="w-3 h-3 text-gray-600" />
                                 </div>
                                 <input
                                     type="tel"
@@ -118,7 +111,7 @@ const Register = () => {
                             </label>
                             <div className="relative">
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
@@ -128,12 +121,10 @@ const Register = () => {
                                 />
                                 <button
                                     type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900 transition-colors"
                                 >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                                    {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
                                 </button>
                             </div>
                         </div>
@@ -143,7 +134,7 @@ const Register = () => {
                             </label>
                             <div className="relative">
                                 <input
-                                    type="password"
+                                    type={showConfirmPassword ? "text" : "password"}
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
@@ -153,12 +144,10 @@ const Register = () => {
                                 />
                                 <button
                                     type="button"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900 transition-colors"
                                 >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                                    {showConfirmPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
                                 </button>
                             </div>
                         </div>

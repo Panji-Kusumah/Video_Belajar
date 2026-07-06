@@ -3,7 +3,8 @@ import AdminLayout from "./components/layout/AdminLayout";
 import Home from "./pages/public/Home";
 import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
-import NotFound from "./pages/public/NotFound"; // ← TAMBAHKAN INI
+import Courses from "./pages/public/Courses";
+import NotFound from "./pages/public/NotFound";
 import Dashboard from "./pages/admin/Dashboard";
 import Products from "./pages/admin/Products";
 import Users from "./pages/admin/Users";
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/courses" element={<Courses />} />
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<Dashboard />} />
                     <Route path="dashboard" element={<Dashboard />} />

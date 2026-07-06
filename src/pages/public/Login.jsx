@@ -1,23 +1,20 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuthStore from '../../store/useAuthStore';
+import { FaEye } from 'react-icons/fa6';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    const login = useAuthStore((state) => state.login);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        setErrorMessage('');
-        const result = login(email, password);
-        if (result.success) {
+        if (email && password) {
+            localStorage.setItem('user', JSON.stringify({ email, name: 'Margonda' }));
             navigate('/');
-        } else {
-            setErrorMessage(result.message);
         }
     };
+
     return (
         <div className="min-h-screen bg-bg-cream flex items-center justify-center p-6">
             <div className="w-full max-w-130">
@@ -33,12 +30,6 @@ const Login = () => {
                         <p className="text-sm text-gray-600">Yuk, lanjutin belajarmu di videobelajar.</p>
                     </div>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                        {/* Pesan Error */}
-                        {errorMessage && (
-                            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
-                                {errorMessage}
-                            </div>
-                        )}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
                                 E-Mail <span className="text-accent">*</span>
@@ -69,10 +60,7 @@ const Login = () => {
                                     type="button"
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900 transition-colors"
                                 >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                                    <FaEye className="w-5 h-5" />
                                 </button>
                             </div>
                         </div>

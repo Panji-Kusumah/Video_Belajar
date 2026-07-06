@@ -23,9 +23,12 @@ const Navbar = () => {
                         <span className="text-accent">belajar</span>
                     </Link>
                     <div className="flex items-center gap-6">
-                        <a href="#" className="text-base font-normal text-gray-900 hover:text-primary transition-colors">
+                        <Link 
+                            to="/courses" 
+                            className="text-base font-normal text-gray-900 hover:text-primary transition-colors"
+                        >
                             Kategori
-                        </a>
+                        </Link>
                         {!user ? (
                             <Link
                                 to="/login"
@@ -48,7 +51,6 @@ const Navbar = () => {
                                 {isOpen && (
                                     <div className="absolute top-[calc(100%+10px)] right-0 w-50 bg-white rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-200 overflow-hidden z-1000">
                                         <div className="p-4 text-sm text-gray-900 border-b border-gray-200">
-                                            {/* Tampilkan nama user dari store */}
                                             Hai, <strong className="text-primary">{user.name || 'User'}</strong>
                                         </div>
                                         <ul className="py-2">

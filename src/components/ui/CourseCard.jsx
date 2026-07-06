@@ -8,6 +8,7 @@ const CourseCard = ({
     rating,
     reviews,
     price,
+    originalPrice,
 }) => {
     const getStars = (rating) => {
         if (rating >= 4.5) return "★★★★★";
@@ -15,7 +16,12 @@ const CourseCard = ({
         if (rating >= 2.5) return "★★★☆☆";
         return "★★☆☆☆";
     };
-
+    const formatRupiahShort = (angka) => {
+        if (angka >= 1000000) {
+            return "Rp " + (angka / 1000000).toFixed(1) + "JT";
+        }
+        return "Rp " + (angka / 1000) + "K";
+    };
     return (
         <div className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:-translate-y-1 hover:shadow-xl transition-all">
             <div className="w-full h-50 overflow-hidden">
@@ -29,7 +35,7 @@ const CourseCard = ({
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
                     {title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                <p className="text-sm text-gray-600 mb-4 leading-relaxed line-clamp-2">
                     {desc}
                 </p>
                 <div className="flex items-center gap-3 mb-4">
@@ -56,9 +62,16 @@ const CourseCard = ({
                             {rating} ({reviews})
                         </span>
                     </div>
-                    <span className="text-lg font-black text-primary">
-                        {price}
-                    </span>
+                    <div className="flex items-center gap-2">
+                        {originalPrice && (
+                            <span className="text-sm text-gray-400 line-through">
+                                {formatRupiahShort(originalPrice)}
+                            </span>
+                        )}
+                        <span className="text-lg font-black text-primary">
+                            {formatRupiahShort(price)}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
