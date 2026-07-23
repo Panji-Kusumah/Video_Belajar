@@ -1,14 +1,20 @@
-import useCourseStore from '../../store/useCourseStore';
+import { useDispatch } from 'react-redux';
+import { setSearchQuery } from '../../store/redux/courseSlice';
 
-const SearchBox = () => {
-    const { searchQuery, setSearchQuery } = useCourseStore();
-
+const SearchBox = ({ onSearch }) => {
+    const dispatch = useDispatch();
+    const handleSearch = (e) => {
+        const query = e.target.value;
+        dispatch(setSearchQuery(query));
+        if (onSearch) {
+            onSearch(query);
+        }
+    };
     return (
         <div className="relative">
             <input
                 type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearch}
                 placeholder="Cari Kelas"
                 className="w-64 px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-normal text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
             />

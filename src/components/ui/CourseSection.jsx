@@ -1,8 +1,34 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCourses } from "../../store/redux/courseSlice";
 import CourseCard from "./CourseCard";
-import useCourseStore from "../../store/useCourseStore";
 
 const CourseSection = () => {
-    const courses = useCourseStore((state) => state.courses);
+    const dispatch = useDispatch();
+    const { courses, loading, error } = useSelector((state) => state.courses);
+
+    useEffect(() => {
+        dispatch(fetchCourses());
+    }, [dispatch]);
+    if (loading) {
+        return (
+            <section id="courses" className="py-12 px-6">
+                <div className="max-w-300 mx-auto text-center">
+                    <p className="text-gray-600 font-semibold">Memuat data kelas...</p>
+                </div>
+            </section>
+        );
+    }
+    if (error) {
+        return (
+            <section id="courses" className="py-12 px-6">
+                <div className="max-w-300 mx-auto text-center">
+                    <p className="text-red-500 font-semibold">Error: {error}</p>
+                </div>
+            </section>
+        );
+    }
+    const coursesArray = Array.isArray(courses) ? courses : [];
     return (
         <section id="courses" className="py-12 px-6">
             <div className="max-w-300 mx-auto">
@@ -47,18 +73,19 @@ const CourseSection = () => {
                     </a>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {courses.map((course) => (
+                    {coursesArray.slice(0, 6).map((course) => (
                         <CourseCard
                             key={course.id}
                             image={course.image}
                             title={course.title}
-                            desc="Mulai transformasi dengan instruktur profesional, harga terjangkau, dan materi yang relevan dengan kebutuhan industri saat ini."
-                            instructorImage={`https://i.pravatar.cc/150?img=${course.id + 10}`}
+                            desc={course.description}
+                            instructorImage={course.instructorImage}
                             instructorName={course.instructor}
                             instructorRole={course.role}
                             rating={course.rating}
                             reviews={course.reviews}
                             price={course.price}
+                            originalPrice={course.originalPrice}
                         />
                     ))}
                 </div>

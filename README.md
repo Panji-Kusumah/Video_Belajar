@@ -1,145 +1,171 @@
 # 🎓 VideoBelajar
 
-VideoBelajar adalah platform pembelajaran video berbasis web yang memberikan pengguna akses ke berbagai kursus dan tutorial dalam bentuk video. Dengan VideoBelajar, pengguna dapat belajar sesuai dengan kecepatan dan jadwal mereka sendiri. Platform ini menawarkan cara yang fleksibel dan nyaman untuk memperoleh keterampilan serta pengetahuan baru, sehingga memudahkan pengguna menyesuaikan proses belajar dengan aktivitas sehari-hari. VideoBelajar menyediakan berbagai kursus dan tutorial yang mencakup topik seperti bisnis, teknologi, kesehatan dan kesejahteraan, pembelajaran bahasa, dan masih banyak lagi.
+> Modern video learning platform built with React.js, Redux Toolkit, Zustand, Axios, and Tailwind CSS.
+
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2.12-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-5-443E38?style=for-the-badge)
+![Axios](https://img.shields.io/badge/Axios-1.18-5A29E4?style=for-the-badge)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-7-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white)
+![React Phone Number Input](https://img.shields.io/badge/Phone_Input-3.4.17-25D366?style=for-the-badge)
+![React Toastify](https://img.shields.io/badge/React_Toastify-11-FF6B35?style=for-the-badge)
 
 ---
 
-# 📖 Tentang Project
+##  About
 
-VideoBelajar dirancang untuk membantu pengguna menemukan dan mempelajari berbagai topik melalui video pembelajaran berkualitas.
+**VideoBelajar** is a modern web-based learning platform designed to help users discover and explore various video courses across multiple categories.
 
-Platform ini menyediakan:
-
-- Landing Page modern dengan daftar kursus unggulan.
-- Sistem Authentication (Login/Register) dengan validasi keamanan.
-- Admin Panel dengan fitur CRUD lengkap.
-- Dashboard dengan statistik dan recent activities.
-- Manajemen Kursus (tambah, edit, hapus course).
-- Manajemen Pengguna (tambah, edit, hapus user).
-- State Management menggunakan Zustand untuk performa yang optimal.
+This project focuses on implementing modern frontend development practices, including API integration, state management, authentication flow, CRUD operations, responsive design, and reusable component architecture.
 
 ---
 
-# ✔ Fitur Utama
+##  Features
 
-## 🏠 Public Pages
+###  User Features
 
-- ✅ Landing Page Modern dengan Hero Section
-- ✅ Daftar Kursus Unggulan (9 kursus dengan rating & review)
-- ✅ Informasi Instruktur Lengkap
-- ✅ Kategori Kursus (Programming, Desain, Marketing, Bisnis)
-- ✅ Newsletter Subscription
-- ✅ Responsive Design (Desktop & Mobile)
-- ✅ Sistem Login & Register dengan validasi
-- ✅ Conditional Rendering di Navbar (Login Button vs User Avatar)
+- Responsive landing page
+- Course catalog with search and filtering
+- Course sorting and pagination
+- Login and registration system
+- User profile management
+- International phone number input with country code support
+- Persistent authentication session
+- Toast notifications for user feedback
 
-## 🔐 Authentication & Security
+###  Authentication
 
-- ✅ Register wajib dilakukan sebelum Login
-- ✅ Validasi email unik (tidak bisa register dua kali dengan email yang sama)
-- ✅ Validasi password match saat Register
-- ✅ Password tersimpan di LocalStorage (encrypted simulation)
-- ✅ Session persistence menggunakan Zustand + LocalStorage
-- ✅ Logout dengan session clearing
-- ✅ Protected Routes untuk Admin Panel
-- ✅ Conditional UI berdasarkan status login
+- Login and registration flow
+- Email validation
+- Unique email validation during registration
+- Password confirmation validation
+- Session persistence using Zustand
+- Logout functionality
+- Protected admin routes
 
-## 👨‍💼 Admin Panel
+###  Admin Panel
 
-- ✅ Dashboard: Statistik Total Users, Orders, Products, dan Recent Activities
-- ✅ Products Management: CRUD kursus lengkap dengan form dan tabel
-- ✅ Users Management: CRUD pengguna dengan avatar dan validasi
-- ✅ Sidebar Navigation dengan active state
-- ✅ Toast Notifications (zero dependency, smooth animation)
-
-## 🎨 UI / UX Features
-
-- ✅ Custom Toast Notification System
-- ✅ Smooth Animations & Transitions
-- ✅ Hover Effects
-- ✅ Professional Color Scheme (Primary Green, Secondary Yellow, Accent Orange)
-- ✅ Font: Lato (Google Fonts)
+- Dashboard with statistics
+- Course management
+- Create, read, update, and delete courses
+- User management
+- Responsive admin layout
+- Toast notifications for CRUD operations
 
 ---
 
-# 🛠️ Tech Stack
+##  Tech Stack
 
-- React JS (Vite)
-- JavaScript (ES6+)
-- Tailwind CSS v4 (`@theme` configuration)
-- React Router DOM (Nested Routing)
-- Zustand (State Management)
-- LocalStorage (Session & Data Persistence)
-- JSX
+- **React.js** — Frontend UI development
+- **Redux Toolkit** — Course state management
+- **Zustand** — Authentication and user session management
+- **Axios** — HTTP client and API integration
+- **React Router DOM** — Routing and nested routes
+- **Tailwind CSS** — Styling and responsive UI
+- **React Phone Number Input** — International phone number input
+- **React Icons** — UI icons
+- **React Toastify** — Toast notifications
+- **Vite** — Development and build tool
 
 ---
 
-# 📂 Struktur Project
+##  Architecture
+
+The project separates responsibilities between UI components, pages, API services, and state management.
+
+- **Zustand** handles authentication and user session state.
+- **Redux Toolkit** manages course data, filtering, sorting, and CRUD-related state.
+- **Axios** handles communication with the backend API.
+- **React Router DOM** manages application routing and nested admin routes.
+- **React Phone Number Input** provides international phone number formatting and country selection.
+- **React Toastify** provides toast notifications for user feedback.
+
+---
+
+## 📂 Project Structure
 
 ```text
-src/
-├── components/
-│   ├── layout/
-│   │   ├── Navbar.jsx            # Navigation dengan auth logic (Zustand)
-│   │   ├── Footer.jsx
-│   │   ├── Sidebar.jsx           # Admin sidebar navigation
-│   │   └── AdminLayout.jsx       # Admin layout wrapper
-│   │
-│   └── ui/
-│       ├── Hero.jsx
-│       ├── CourseCard.jsx
-│       ├── CourseSection.jsx     # Fetch data dari useCourseStore
-│       ├── Newsletter.jsx
-│       └── Toast.jsx             # Custom toast notification
-│
-├── pages/
-│   ├── public/
-│   │   ├── Home.jsx
-│   │   ├── Login.jsx             # Validasi dengan useAuthStore
-│   │   └── Register.jsx          # Register dengan validasi email unik
-│   │
-│   └── admin/
-│       ├── Dashboard.jsx         # Display user name dari Zustand
-│       ├── Products.jsx          # CRUD courses dengan useCourseStore
-│       └── Users.jsx             # CRUD users
-│
-├── store/
-│   ├── useAuthStore.js           # Authentication state management
-│   └── useCourseStore.js         # Course data management
-│
-├── App.jsx                       # React Router setup
-├── main.jsx
-└── index.css                     # Tailwind CSS v4 configuration
+└───src
+    │   App.jsx
+    │   index.css
+    │   main.jsx
+    │
+    ├───assets
+    │       react.svg
+    │
+    ├───components
+    │   ├───layout
+    │   │       AdminLayout.jsx
+    │   │       Footer.jsx
+    │   │       Navbar.jsx
+    │   │       Sidebar.jsx
+    │   │
+    │   └───ui
+    │           CourseCard.jsx
+    │           CourseSection.jsx
+    │           FilterSidebar.jsx
+    │           Hero.jsx
+    │           NewsLetter.jsx
+    │           Pagination.jsx
+    │           SearchBox.jsx
+    │           SortDropdown.jsx
+    │           Toast.jsx
+    │
+    ├───context
+    │       ThemeContext.jsx
+    │
+    ├───pages
+    │   ├───admin
+    │   │       Dashboard.jsx
+    │   │       Products.jsx
+    │   │       Users.jsx
+    │   │
+    │   └───public
+    │           Courses.jsx
+    │           Home.jsx
+    │           Login.jsx
+    │           NotFound.jsx
+    │           Profile.jsx
+    │           Register.jsx
+    │
+    ├───services
+    │       api.js
+    │
+    ├───store
+    │   │   useAuthStore.js
+    │   │
+    │   └───redux
+    │           courseSlice.js
+    │           store.js
+    │
+    └───utils
 ```
+---
+
+##  Project Goals
+
+This project was built to practice and implement:
+
+- Component-based architecture with React
+- State management using Redux Toolkit and Zustand
+- REST API integration using Axios
+- CRUD operations
+- Authentication flow
+- Client-side routing
+- Responsive web design
+- Reusable UI components
+- Modern frontend development workflow
 
 ---
 
-# ✔ Tujuan Project
-
-Project ini dibuat untuk:
-
-- ✅ Mempelajari React JS dan Component-Based Architecture.
-- ✅ Mengimplementasikan Zustand sebagai state management yang efisien.
-- ✅ Menerapkan CRUD Operations (Create, Read, Update, Delete).
-- ✅ Mengimplementasikan React Router DOM dengan Nested Routes.
-- ✅ Menerapkan Responsive Web Design menggunakan Tailwind CSS v4.
-- ✅ Mengubah desain Figma menjadi aplikasi web nyata.
-- ✅ Melatih kemampuan Frontend Development sesuai standar industri.
-- ✅ Mengimplementasikan Authentication Flow dengan validasi keamanan.
-- ✅ Memisahkan concerns melalui state management menggunakan Zustand.
-
----
-
-# 📄 License
-
-Project ini dilisensikan di bawah **MIT License**. Lihat file **LICENSE** untuk informasi lebih lanjut.
-
----
-
-# 👨‍💻 Developer
+##  Developer
 
 **Panji Kusumah**
 
-Project pembelajaran Frontend menggunakan React JS.
+Frontend Development Project
 
-> *"Code by choice, not by force."*
+*Async...*  
+*Asynchronous...*  
+*Promise pending...*  
+*Life mysterious...*

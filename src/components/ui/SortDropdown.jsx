@@ -1,25 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
-import useCourseStore from '../../store/useCourseStore';
+import { useDispatch } from 'react-redux';
+import { setSortBy } from '../../store/redux/courseSlice';
 
-const SortDropdown = () => {
+const SortDropdown = ({ onSort }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
-    const { sortBy, setSortBy } = useCourseStore();
-
+    const dispatch = useDispatch();
     const sortOptions = [
+        { value: 'default', label: 'Urutkan' },
         { value: 'price-low', label: 'Harga Rendah' },
         { value: 'price-high', label: 'Harga Tinggi' },
         { value: 'a-z', label: 'A to Z' },
         { value: 'z-a', label: 'Z to A' },
         { value: 'rating-high', label: 'Rating Tertinggi' },
-        { value: 'rating-low', label: 'Rating Terendah' },
     ];
-
-    const getSelectedLabel = () => {
-        const option = sortOptions.find(opt => opt.value === sortBy);
-        return option ? option.label : 'Urutkan';
-    };
-
+    const [currentSort, setCurrentSort] = useState('default');
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -29,7 +24,18 @@ const SortDropdown = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
-
+    const handleSelect = (option) => {
+        setCurrentSort(option.value);
+        dispatch(setSortBy(option.value));
+        if (onSort) {
+            onSort(option.value);
+        }
+        setIsOpen(false);
+    };
+    const getSelectedLabel = () => {
+        const option = sortOptions.find(opt => opt.value === currentSort);
+        return option ? option.label : 'Urutkan';
+    };
     return (
         <div className="relative" ref={dropdownRef}>
             <button
@@ -46,11 +52,8 @@ const SortDropdown = () => {
                     {sortOptions.map((option) => (
                         <button
                             key={option.value}
-                            onClick={() => {
-                                setSortBy(option.value);
-                                setIsOpen(false);
-                            }}
-                            className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${sortBy === option.value ? 'bg-primary-light text-primary font-semibold' : 'text-gray-700'
+                            onClick={() => handleSelect(option)}
+                            className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${currentSort === option.value ? 'bg-primary-light text-primary font-semibold' : 'text-gray-700'
                                 }`}
                         >
                             {option.label}
