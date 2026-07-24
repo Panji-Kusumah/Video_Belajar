@@ -6,6 +6,10 @@ import Home from './pages/public/Home';
 import Login from './pages/public/Login';
 import Register from './pages/public/Register';
 import Courses from './pages/public/Courses';
+import CourseDetail from './pages/public/CourseDetail';
+import PaymentMethod from './pages/public/PaymentMethod';
+import Checkout from './pages/public/Checkout';
+import PaymentSuccess from './pages/public/PaymentSuccess';
 import Profile from './pages/public/Profile';
 import NotFound from './pages/public/NotFound';
 import Dashboard from './pages/admin/Dashboard';
@@ -20,6 +24,10 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/courses" element={<Courses />} />
+                <Route path="/course/:id" element={<CourseDetail />} />
+                <Route path="/payment-method/:id" element={<PaymentMethod />} />
+                <Route path="/checkout/:id" element={<Checkout />} />
+                <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/my-courses" element={<Profile />} />
                 <Route path="/orders" element={<Profile />} />
@@ -33,7 +41,7 @@ function App() {
             </Routes>
             <ToastContainer
                 position="top-right"
-                autoClose={3000}
+                autoClose={1000}
                 hideProgressBar={false}
                 newestOnTop
                 closeOnClick

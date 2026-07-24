@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { FaChevronDown, FaFilter } from 'react-icons/fa6';
+import { FaRegSadTear } from 'react-icons/fa'; // Ganti dengan icon ini
 import { toast } from 'react-toastify';
 
 import {
@@ -24,6 +27,7 @@ import Pagination from '../../components/ui/Pagination';
 
 const Courses = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [showFilters, setShowFilters] = useState(false);
     const itemsPerPage = 6;
@@ -74,6 +78,9 @@ const Courses = () => {
         setCurrentPage(1);
         toast.success('Semua filter berhasil direset');
     };
+    const handleCourseClick = (courseId) => {
+        navigate(`/course/${courseId}`);
+    };
     if (loading && safeFilteredCourses.length === 0) {
         return (
             <div className="min-h-screen bg-bg-cream flex items-center justify-center">
@@ -100,21 +107,15 @@ const Courses = () => {
                         Jelajahi Dunia Pengetahuan Melalui Pilihan Kami!
                     </p>
                 </div>
-                {/* Mobile Filter Toggle */}
                 <div className="lg:hidden mb-4">
                     <button
                         onClick={() => setShowFilters(!showFilters)}
                         className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-900"
                     >
                         <span>Filter</span>
-                        <svg
+                        <FaChevronDown
                             className={`w-5 h-5 transition-transform ${showFilters ? 'rotate-180' : ''}`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
+                        />
                     </button>
                     {showFilters && (
                         <div className="mt-4">
@@ -127,7 +128,6 @@ const Courses = () => {
                         </div>
                     )}
                 </div>
-                {/* Search & Sort Bar */}
                 <div className="flex flex-col sm:flex-row gap-3 mb-6">
                     <div className="flex gap-3">
                         <SortDropdown onSort={handleSort} />
@@ -135,9 +135,7 @@ const Courses = () => {
                             onClick={() => setShowFilters(!showFilters)}
                             className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-normal text-gray-700"
                         >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                            </svg>
+                            <FaFilter className="w-4 h-4" />
                             Filter
                         </button>
                     </div>
@@ -145,7 +143,6 @@ const Courses = () => {
                         <SearchBox onSearch={handleSearch} />
                     </div>
                 </div>
-                {/* Desktop Layout */}
                 <div className="hidden lg:flex gap-6">
                     <FilterSidebar
                         onToggleCategory={handleToggleCategory}
@@ -169,14 +166,13 @@ const Courses = () => {
                                         reviews={course.reviews}
                                         price={course.price}
                                         originalPrice={course.originalPrice}
+                                        onClick={() => handleCourseClick(course.id)}
                                     />
                                 ))}
                             </div>
                         ) : (
                             <div className="text-center py-16">
-                                <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <FaRegSadTear className="w-16 h-16 mx-auto text-gray-300 mb-4" />
                                 <h3 className="text-lg font-bold text-gray-900 mb-2">Tidak Ada Kelas Ditemukan</h3>
                                 <p className="text-sm text-gray-600">Coba ubah filter atau kata kunci pencarian Anda.</p>
                             </div>
@@ -190,7 +186,6 @@ const Courses = () => {
                         )}
                     </div>
                 </div>
-                {/* Mobile Layout */}
                 <div className="lg:hidden">
                     {paginatedCourses.length > 0 ? (
                         <div className="grid grid-cols-1 gap-4">
@@ -207,14 +202,13 @@ const Courses = () => {
                                     reviews={course.reviews}
                                     price={course.price}
                                     originalPrice={course.originalPrice}
+                                    onClick={() => handleCourseClick(course.id)}
                                 />
                             ))}
                         </div>
                     ) : (
                         <div className="text-center py-16">
-                            <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                            <FaRegSadTear className="w-16 h-16 mx-auto text-gray-300 mb-4" />
                             <h3 className="text-lg font-bold text-gray-900 mb-2">Tidak Ada Kelas Ditemukan</h3>
                             <p className="text-sm text-gray-600">Coba ubah filter atau kata kunci pencarian Anda.</p>
                         </div>

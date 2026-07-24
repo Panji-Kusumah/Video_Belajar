@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCourses } from "../../store/redux/courseSlice";
@@ -6,7 +7,6 @@ import CourseCard from "./CourseCard";
 const CourseSection = () => {
     const dispatch = useDispatch();
     const { courses, loading, error } = useSelector((state) => state.courses);
-
     useEffect(() => {
         dispatch(fetchCourses());
     }, [dispatch]);
@@ -74,19 +74,20 @@ const CourseSection = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {coursesArray.slice(0, 6).map((course) => (
-                        <CourseCard
-                            key={course.id}
-                            image={course.image}
-                            title={course.title}
-                            desc={course.description}
-                            instructorImage={course.instructorImage}
-                            instructorName={course.instructor}
-                            instructorRole={course.role}
-                            rating={course.rating}
-                            reviews={course.reviews}
-                            price={course.price}
-                            originalPrice={course.originalPrice}
-                        />
+                        <Link key={course.id} to={`/course/${course.id}`} className="block">
+                            <CourseCard
+                                image={course.image}
+                                title={course.title}
+                                desc={course.description}
+                                instructorImage={course.instructorImage}
+                                instructorName={course.instructor}
+                                instructorRole={course.role}
+                                rating={course.rating}
+                                reviews={course.reviews}
+                                price={course.price}
+                                originalPrice={course.originalPrice}
+                            />
+                        </Link>
                     ))}
                 </div>
             </div>

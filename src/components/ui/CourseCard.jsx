@@ -9,6 +9,7 @@ const CourseCard = ({
     reviews,
     price,
     originalPrice,
+    onClick,
 }) => {
     const getStars = (rating) => {
         if (rating >= 4.5) return "★★★★★";
@@ -23,7 +24,10 @@ const CourseCard = ({
         return "Rp " + (angka / 1000) + "K";
     };
     return (
-        <div className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:-translate-y-1 hover:shadow-xl transition-all">
+        <div 
+            onClick={onClick}
+            className={`bg-white rounded-xl overflow-hidden border border-gray-200 hover:-translate-y-1 hover:shadow-xl transition-all ${onClick ? 'cursor-pointer' : ''}`}
+        >
             <div className="w-full h-50 overflow-hidden">
                 <img
                     src={image}
