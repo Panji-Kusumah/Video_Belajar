@@ -101,7 +101,7 @@ const CourseDetail = () => {
         {
             name: 'Gibran',
             batch: 'Alumni Batch 21',
-            avatar: 'https://i.pravatar.cc/40?img=`21',
+            avatar: 'https://i.pravatar.cc/40?img=`22',
             comment: 'Sangat worth it! Proyek akhirnya benar-benar mengasah skill dan bisa langsung saya masukkan ke portofolio.',
             rating: 5.0
         }
