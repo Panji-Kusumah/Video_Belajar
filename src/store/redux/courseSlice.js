@@ -9,6 +9,7 @@ export const fetchCourses = createAsyncThunk('courses/fetchCourses', async (_, {
         return rejectWithValue(error.response?.data || 'Gagal mengambil data');
     }
 });
+
 export const createCourse = createAsyncThunk('courses/createCourse', async (courseData, { rejectWithValue }) => {
     try {
         const data = await addCourse(courseData);
@@ -17,6 +18,7 @@ export const createCourse = createAsyncThunk('courses/createCourse', async (cour
         return rejectWithValue(error.response?.data || 'Gagal menambahkan course');
     }
 });
+
 export const updateCourse = createAsyncThunk('courses/updateCourse', async ({ id, courseData }, { rejectWithValue }) => {
     try {
         const data = await editCourse(id, courseData);
@@ -25,6 +27,7 @@ export const updateCourse = createAsyncThunk('courses/updateCourse', async ({ id
         return rejectWithValue(error.response?.data || 'Gagal mengupdate course');
     }
 });
+
 export const removeCourse = createAsyncThunk('courses/removeCourse', async (id, { rejectWithValue }) => {
     try {
         await deleteCourse(id);
@@ -54,7 +57,7 @@ const courseSlice = createSlice({
             if (state.selectedCategories.includes(category)) {
                 state.selectedCategories = state.selectedCategories.filter(c => c !== category);
             } else {
-                state.selectedCategories.push(category);
+                state.selectedCategories = [...state.selectedCategories, category];
             }
         },
         setDuration: (state, action) => {
@@ -85,7 +88,7 @@ const courseSlice = createSlice({
             })
             .addCase(fetchCourses.fulfilled, (state, action) => {
                 state.loading = false;
-                state.courses = action.payload; // action.payload sekarang sudah pasti array
+                state.courses = action.payload;
             })
             .addCase(fetchCourses.rejected, (state, action) => {
                 state.loading = false;
@@ -153,6 +156,7 @@ export const selectFilteredCourses = createSelector(
         } else if (coursesState.sortBy === 'z-a') {
             filtered = [...filtered].sort((a, b) => b.title.localeCompare(a.title));
         }
+
         return filtered;
     }
 );
