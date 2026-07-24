@@ -92,15 +92,15 @@ const CourseDetail = () => {
     ];
     const reviews = [
         {
-            name: 'Budi Santoso',
+            name: 'Jokowi',
             batch: 'Alumni Batch 2',
             avatar: 'https://i.pravatar.cc/40?img=11',
             comment: 'Materinya sangat terstruktur dan mudah dipahami. Instrukturnya juga responsif saat ada pertanyaan di forum diskusi.',
             rating: 4.5
         },
         {
-            name: 'Siti Aminah',
-            batch: 'Alumni Batch 4',
+            name: 'Gibran',
+            batch: 'Alumni Batch 21',
             avatar: 'https://i.pravatar.cc/40?img=5',
             comment: 'Sangat worth it! Proyek akhirnya benar-benar mengasah skill dan bisa langsung saya masukkan ke portofolio.',
             rating: 5.0
@@ -305,7 +305,6 @@ const CourseDetail = () => {
                                     </div>
                                 </div>
                             </div>
-                            
                             <div className="pt-6 border-t border-gray-200 mt-6">
                                 <p className="text-sm font-bold text-gray-900 mb-2">Bahasa Pengantar</p>
                                 <div className="flex items-center gap-2 text-sm text-gray-600">
