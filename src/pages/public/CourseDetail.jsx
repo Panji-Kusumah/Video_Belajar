@@ -9,13 +9,15 @@ import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import CourseCard from '../../components/ui/CourseCard';
 import { getCourses } from '../../services/api';
+import useAuthStore from '../../store/useAuthStore';
 
 const CourseDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const user = useAuthStore((state) => state.user);
     const [course, setCourse] = useState(null);
     const [relatedCourses, setRelatedCourses] = useState([]);
-    const [expandedSections, setExpandedSections] = useState([0]); // Section pertama terbuka default
+    const [expandedSections, setExpandedSections] = useState([0]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const fetchCourseDetail = async () => {
@@ -43,14 +45,14 @@ const CourseDetail = () => {
         window.scrollTo(0, 0);
     }, [id, navigate]);
     const handleBuyClick = () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
+        if (!user) {
             toast.error('Silakan login terlebih dahulu untuk membeli kelas');
             navigate('/login');
         } else {
             navigate(`/payment-method/${id}`);
         }
     };
+
     const toggleSection = (index) => {
         setExpandedSections(prev => 
             prev.includes(index) 
@@ -90,6 +92,7 @@ const CourseDetail = () => {
             ]
         }
     ];
+
     const reviews = [
         {
             name: 'Jokowi',
@@ -101,7 +104,7 @@ const CourseDetail = () => {
         {
             name: 'Gibran',
             batch: 'Alumni Batch 21',
-            avatar: 'https://i.pravatar.cc/40?img=`22',
+            avatar: 'https://i.pravatar.cc/40?img=22',
             comment: 'Sangat worth it! Proyek akhirnya benar-benar mengasah skill dan bisa langsung saya masukkan ke portofolio.',
             rating: 5.0
         }
@@ -278,12 +281,15 @@ const CourseDetail = () => {
                             <p className="text-xs text-gray-500 mb-6 flex items-center gap-1">
                                 <FaClock className="w-3 h-3" /> Penawaran spesial berakhir dalam 2 hari!
                             </p>
+                            
+                            {/* TOMBOL BELI DENGAN LOGIKA ZUSTAND */}
                             <button
                                 onClick={handleBuyClick}
                                 className="w-full py-3.5 bg-primary text-white rounded-lg text-base font-bold hover:bg-primary-dark hover:shadow-lg hover:-translate-y-0.5 transition-all mb-6"
                             >
                                 Beli Kelas Sekarang
                             </button>
+                            
                             <div className="space-y-4 pt-6 border-t border-gray-200">
                                 <p className="text-sm font-bold text-gray-900">Kelas Ini Termasuk:</p>
                                 <div className="grid grid-cols-1 gap-3">
@@ -340,7 +346,6 @@ const CourseDetail = () => {
                     </div>
                 )}
             </div>
-            {/* NGOPI DULU BRAY */}
             <Footer />
         </div>
     );
