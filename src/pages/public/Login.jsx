@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
     const handleSubmit = (e) => {
         e.preventDefault();
         if (email && password) {
+            localStorage.setItem('token', 'mock-jwt-token-12345');
             localStorage.setItem(
                 'user',
                 JSON.stringify({
@@ -17,23 +21,19 @@ const Login = () => {
                     name: 'Margonda'
                 })
             );
-            navigate('/');
+            toast.success('Login berhasil! Selamat datang kembali.');
+            navigate(from, { replace: true });
+        } else {
+            toast.error('Email dan password wajib diisi!');
         }
     };
     return (
         <div className="min-h-screen bg-bg-cream flex items-center justify-center p-6">
             <div className="w-full max-w-130">
                 <div className="text-center mb-8">
-                    <Link
-                        to="/"
-                        className="text-2xl font-black inline-block"
-                    >
-                        <span className="text-secondary">
-                            video
-                        </span>
-                        <span className="text-accent">
-                            belajar
-                        </span>
+                    <Link to="/" className="text-2xl font-black inline-block">
+                        <span className="text-secondary">video</span>
+                        <span className="text-accent">belajar</span>
                     </Link>
                 </div>
                 <div className="bg-white rounded-2xl p-10 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
@@ -45,15 +45,11 @@ const Login = () => {
                             Yuk, lanjutin belajarmu di videobelajar.
                         </p>
                     </div>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="flex flex-col gap-5"
-                    >
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         {/* EMAIL */}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
-                                E-Mail
-                                <span className="text-accent"> *</span>
+                                E-Mail<span className="text-accent"> *</span>
                             </label>
                             <input
                                 type="email"
@@ -67,8 +63,7 @@ const Login = () => {
                         {/* PASSWORD */}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
-                                Kata Sandi
-                                <span className="text-accent"> *</span>
+                                Kata Sandi<span className="text-accent"> *</span>
                             </label>
                             <div className="relative">
                                 <input
@@ -93,10 +88,7 @@ const Login = () => {
                             </div>
                         </div>
                         <div className="text-right -mt-2">
-                            <a
-                                href="#"
-                                className="text-sm text-gray-600 hover:text-primary transition-colors underline"
-                            >
+                            <a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors underline">
                                 Lupa Password?
                             </a>
                         </div>
@@ -114,19 +106,13 @@ const Login = () => {
                         </Link>
                         <div className="relative text-center my-2">
                             <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-200"></div>
-                            <span className="relative bg-white px-4 text-xs text-gray-400">
-                                atau
-                            </span>
+                            <span className="relative bg-white px-4 text-xs text-gray-400">atau</span>
                         </div>
                         <button
                             type="button"
                             className="w-full py-3.5 px-6 bg-white text-gray-900 border border-gray-200 rounded-xl text-base font-bold hover:bg-gray-50 hover:border-gray-600 transition-all flex items-center justify-center gap-2"
                         >
-                            <img
-                                src="https://www.google.com/favicon.ico"
-                                alt="Google"
-                                className="w-5 h-5"
-                            />
+                            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                             Masuk dengan Google
                         </button>
                     </form>
