@@ -17,13 +17,11 @@ const CourseDetail = () => {
     const [relatedCourses, setRelatedCourses] = useState([]);
     const [expandedSections, setExpandedSections] = useState([0]); // Section pertama terbuka default
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchCourseDetail = async () => {
             try {
                 const allCourses = await getCourses();
                 const foundCourse = allCourses.find(c => c.id === parseInt(id));
-                
                 if (foundCourse) {
                     setCourse(foundCourse);
                     const related = allCourses
@@ -44,6 +42,15 @@ const CourseDetail = () => {
         fetchCourseDetail();
         window.scrollTo(0, 0);
     }, [id, navigate]);
+    const handleBuyClick = () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            toast.error('Silakan login terlebih dahulu untuk membeli kelas');
+            navigate('/login');
+        } else {
+            navigate(`/payment-method/${id}`);
+        }
+    };
     const toggleSection = (index) => {
         setExpandedSections(prev => 
             prev.includes(index) 
@@ -133,10 +140,9 @@ const CourseDetail = () => {
                     <span className="text-gray-900 font-medium truncate">{course.title}</span>
                 </div>
             </div>
-            {/* Hero Section */}
             <div className="max-w-300 w-full mx-auto px-4 sm:px-6 mb-8">
                 <div className="relative rounded-2xl overflow-hidden h-64 sm:h-80 bg-cover bg-center shadow-lg" style={{ backgroundImage: `url(${course.image})` }}>
-                    <div className="absolute inset-0 bg-lienar-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div className="relative z-10 h-full flex flex-col justify-end p-6 sm:p-8 text-white">
                         <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold rounded-full w-fit mb-3">
                             {course.category}
@@ -153,11 +159,9 @@ const CourseDetail = () => {
                     </div>
                 </div>
             </div>
-            {/* Main Content */}
             <div className="max-w-300 w-full mx-auto px-4 sm:px-6 pb-12 flex-1">
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
                     <div className="space-y-6">
-                        {/* Deskripsi */}
                         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                             <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                                 <FaFileAlt className="text-primary" /> Deskripsi Kelas
@@ -166,7 +170,6 @@ const CourseDetail = () => {
                                 {course.description || "Deskripsi kelas akan muncul di sini."}
                             </p>
                         </div>
-                        {/* Tutor Profesional */}
                         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                             <h2 className="text-xl font-bold text-gray-900 mb-4">Belajar bersama Tutor Profesional</h2>
                             <div className="flex flex-col sm:flex-row gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -201,7 +204,6 @@ const CourseDetail = () => {
                                                     <FaChevronDown className="w-4 h-4 text-gray-400" />
                                                 </div>
                                             </button>
-                                            {/* Dropdown Content */}
                                             {isExpanded && (
                                                 <div className="bg-gray-50/50 px-6 pb-4">
                                                     {section.lessons.length > 0 ? (
@@ -240,7 +242,6 @@ const CourseDetail = () => {
                                 })}
                             </div>
                         </div>
-                        {/* Rating dan Review */}
                         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                             <h2 className="text-xl font-bold text-gray-900 mb-6">Rating dan Review Murid</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -263,14 +264,12 @@ const CourseDetail = () => {
                     <div className="lg:sticky lg:top-24 lg:self-start">
                         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg">
                             <h3 className="text-lg font-bold text-gray-900 mb-4 leading-snug">{course.title}</h3>
-                            {/* Harga */}
                             <div className="flex items-baseline gap-3 mb-2">
                                 <span className="text-3xl font-black text-primary">{formatRupiah(course.price)}</span>
                                 {course.originalPrice && course.originalPrice > course.price && (
                                     <span className="text-base text-gray-400 line-through">{formatRupiah(course.originalPrice)}</span>
                                 )}
                             </div>
-                            {/* Badge Diskon */}
                             {course.originalPrice && course.originalPrice > course.price && (
                                 <div className="inline-block px-3 py-1 bg-red-100 text-red-600 text-xs font-bold rounded-full mb-4">
                                     Hemat {Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100)}%
@@ -280,14 +279,11 @@ const CourseDetail = () => {
                                 <FaClock className="w-3 h-3" /> Penawaran spesial berakhir dalam 2 hari!
                             </p>
                             <button
-                                onClick={() => {
-                                    navigate(`/payment-method/${id}`);
-                                }}
+                                onClick={handleBuyClick}
                                 className="w-full py-3.5 bg-primary text-white rounded-lg text-base font-bold hover:bg-primary-dark hover:shadow-lg hover:-translate-y-0.5 transition-all mb-6"
                             >
                                 Beli Kelas Sekarang
                             </button>
-                            {/* Info Kelas */}
                             <div className="space-y-4 pt-6 border-t border-gray-200">
                                 <p className="text-sm font-bold text-gray-900">Kelas Ini Termasuk:</p>
                                 <div className="grid grid-cols-1 gap-3">
@@ -309,6 +305,7 @@ const CourseDetail = () => {
                                     </div>
                                 </div>
                             </div>
+                            
                             <div className="pt-6 border-t border-gray-200 mt-6">
                                 <p className="text-sm font-bold text-gray-900 mb-2">Bahasa Pengantar</p>
                                 <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -344,6 +341,7 @@ const CourseDetail = () => {
                     </div>
                 )}
             </div>
+            {/* NGOPI DULU BRAY */}
             <Footer />
         </div>
     );

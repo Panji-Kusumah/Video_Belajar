@@ -565,7 +565,7 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
-            {/* OKE ROKO HABIS KOPI HABIS CODE MERAH BESOK LAGI  */}
+            {/* OKE ROKO HABIS KOPI HABIS CODE MERAH BESOK LAGI */}
             <Footer />
         </div>
     );

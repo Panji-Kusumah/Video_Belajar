@@ -14,9 +14,7 @@ import {
     setSortBy,
     resetFilters
 } from '../../store/redux/courseSlice';
-
 import { selectFilteredCourses } from '../../store/redux/courseSlice';
-
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import FilterSidebar from '../../components/ui/FilterSidebar';

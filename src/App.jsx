@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminLayout from './components/layout/AdminLayout';
+import ProtectedRoute from './routes/ProtectedRoute';
 import Home from './pages/public/Home';
 import Login from './pages/public/Login';
 import Register from './pages/public/Register';
@@ -25,12 +26,14 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/course/:id" element={<CourseDetail />} />
-                <Route path="/payment-method/:id" element={<PaymentMethod />} />
-                <Route path="/checkout/:id" element={<Checkout />} />
-                <Route path="/payment-success" element={<PaymentSuccess />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/my-courses" element={<Profile />} />
-                <Route path="/orders" element={<Profile />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/payment-method/:id" element={<PaymentMethod />} />
+                    <Route path="/checkout/:id" element={<Checkout />} />
+                    <Route path="/payment-success" element={<PaymentSuccess />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/my-courses" element={<Profile />} />
+                    <Route path="/orders" element={<Profile />} />
+                </Route>
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<Dashboard />} />
                     <Route path="dashboard" element={<Dashboard />} />
@@ -41,7 +44,7 @@ function App() {
             </Routes>
             <ToastContainer
                 position="top-right"
-                autoClose={1000}
+                autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop
                 closeOnClick
