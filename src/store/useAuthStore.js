@@ -1,43 +1,99 @@
 import { create } from 'zustand';
 
+const getStorage = (key, fallback) => {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : fallback;
+    } catch {
+        return fallback;
+    }
+};
+
 const useAuthStore = create((set, get) => ({
-    user: JSON.parse(localStorage.getItem('user')) || null,
-    registeredUsers: JSON.parse(localStorage.getItem('registeredUsers')) || [],
+    user: getStorage('user', null),
+    registeredUsers: getStorage('registeredUsers', []),
     login: (email, password) => {
         const { registeredUsers } = get();
+        const normalizedEmail = email.toLowerCase().trim();
         const foundUser = registeredUsers.find(
-            (u) => u.email === email && u.password === password
+            (user) =>
+                user.email === normalizedEmail &&
+                user.password === password
         );
-        if (foundUser) {
-            const userData = { email: foundUser.email, name: foundUser.name, phone: foundUser.phone };
-            localStorage.setItem('user', JSON.stringify(userData));
-            set({ user: userData });
-            return { success: true, message: 'Login berhasil!' };
+        if (!foundUser) {
+            return {
+                success: false,
+                message: 'Email atau kata sandi salah, atau akun belum terdaftar.'
+            };
         }
-        return { success: false, message: 'Email atau kata sandi salah, atau akun belum terdaftar.' };
+        const userData = {
+            email: foundUser.email,
+            name: foundUser.name,
+            phone: foundUser.phone
+        };
+        localStorage.setItem(
+            'user',
+            JSON.stringify(userData)
+        );
+        set({
+            user: userData
+        });
+        return {
+            success: true,
+            message: 'Login berhasil!'
+        };
     },
     register: (data) => {
         const { registeredUsers } = get();
-        const emailExists = registeredUsers.some((u) => u.email === data.email);
+        const normalizedEmail = data.email
+            .toLowerCase()
+            .trim();
+        const emailExists = registeredUsers.some(
+            (user) => user.email === normalizedEmail
+        );
         if (emailExists) {
-            return { success: false, message: 'Email sudah terdaftar! Silakan login.' };
+            return {
+                success: false,
+                message: 'Email sudah terdaftar! Silakan login.'
+            };
         }
         const newUser = {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            password: data.password,
+            name: data.name.trim(),
+            email: normalizedEmail,
+            phone: data.phone.trim(),
+            password: data.password
         };
-        const updatedUsers = [...registeredUsers, newUser];
-        localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
-        const userData = { email: newUser.email, name: newUser.name, phone: newUser.phone };
-        localStorage.setItem('user', JSON.stringify(userData));
-        set({ user: userData, registeredUsers: updatedUsers });
-        return { success: true, message: 'Pendaftaran berhasil!' };
+        const updatedUsers = [
+            ...registeredUsers,
+            newUser
+        ];
+        localStorage.setItem(
+            'registeredUsers',
+            JSON.stringify(updatedUsers)
+        );
+        const userData = {
+            email: newUser.email,
+            name: newUser.name,
+            phone: newUser.phone
+        };
+        localStorage.setItem(
+            'user',
+            JSON.stringify(userData)
+        );
+        set({
+            user: userData,
+            registeredUsers: updatedUsers
+        });
+        return {
+            success: true,
+            message: 'Pendaftaran berhasil!'
+        };
     },
     logout: () => {
         localStorage.removeItem('user');
-        set({ user: null });
+        set({
+            user: null
+        });
     }
 }));
 
