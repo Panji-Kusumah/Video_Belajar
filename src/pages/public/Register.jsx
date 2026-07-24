@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { toast } from 'react-toastify';
 import useAuthStore from '../../store/useAuthStore';
 
 const Register = () => {
@@ -15,10 +16,7 @@ const Register = () => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [message, setMessage] = useState({
-        text: '',
-        type: ''
-    });
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const register = useAuthStore((state) => state.register);
     const handleChange = (e) => {
@@ -35,79 +33,52 @@ const Register = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        setMessage({
-            text: '',
-            type: ''
-        });
         if (!formData.name.trim()) {
-            setMessage({
-                text: 'Nama lengkap wajib diisi!',
-                type: 'error'
-            });
+            toast.error('Nama lengkap wajib diisi!');
             return;
         }
         if (!formData.email.trim()) {
-            setMessage({
-                text: 'Email wajib diisi!',
-                type: 'error'
-            });
+            toast.error('Email wajib diisi!');
             return;
         }
         if (!formData.phone.trim()) {
-            setMessage({
-                text: 'Nomor HP wajib diisi!',
-                type: 'error'
-            });
+            toast.error('Nomor HP wajib diisi!');
             return;
         }
         if (!formData.password) {
-            setMessage({
-                text: 'Kata sandi wajib diisi!',
-                type: 'error'
-            });
+            toast.error('Kata sandi wajib diisi!');
             return;
         }
         if (formData.password.length < 6) {
-            setMessage({
-                text: 'Kata sandi minimal 6 karakter!',
-                type: 'error'
-            });
+            toast.error('Kata sandi minimal 6 karakter!');
             return;
         }
         if (formData.password !== formData.confirmPassword) {
-            setMessage({
-                text: 'Konfirmasi kata sandi tidak cocok!',
-                type: 'error'
-            });
+            toast.error('Konfirmasi kata sandi tidak cocok!');
             return;
         }
+        setIsLoading(true);
         const result = register(formData);
-        if (result && result.success) {
-            navigate('/login');
-        } else {
-            setMessage({
-                text: result?.message || 'Registrasi gagal!',
-                type: 'error'
-            });
-        }
+        setTimeout(() => {
+            if (result && result.success) {
+                toast.success(result.message);
+                navigate('/', { replace: true });
+            } else {
+                toast.error(result?.message || 'Registrasi gagal!');
+            }
+            setIsLoading(false);
+        }, 500);
     };
-
     return (
         <div className="min-h-screen bg-bg-cream flex items-center justify-center p-6">
             <div className="w-full max-w-130">
                 <div className="text-center mb-8">
-                    <Link
-                        to="/"
-                        className="text-2xl font-black inline-block"
-                    >
-                        <span className="text-secondary">
-                            video
-                        </span>
-                        <span className="text-accent">
-                            belajar
-                        </span>
+                    <Link to="/" className="text-2xl font-black inline-block">
+                        <span className="text-secondary">video</span>
+                        <span className="text-accent">belajar</span>
                     </Link>
                 </div>
+                
                 <div className="bg-white rounded-2xl p-10 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
                     <div className="text-center mb-8">
                         <h1 className="text-2xl font-black text-gray-900 mb-2">
@@ -117,26 +88,12 @@ const Register = () => {
                             Yuk, daftarkan akunmu sekarang juga!
                         </p>
                     </div>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="flex flex-col gap-5"
-                    >
-                        {message.text && (
-                            <div
-                                className={`border text-sm px-4 py-3 rounded-xl ${
-                                    message.type === 'error'
-                                        ? 'bg-red-50 border-red-200 text-red-600'
-                                        : 'bg-green-50 border-green-200 text-green-600'
-                                }`}
-                            >
-                                {message.text}
-                            </div>
-                        )}
+                    
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         {/* NAMA */}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
-                                Nama Lengkap
-                                <span className="text-accent"> *</span>
+                                Nama Lengkap<span className="text-accent"> *</span>
                             </label>
                             <input
                                 type="text"
@@ -151,8 +108,7 @@ const Register = () => {
                         {/* EMAIL */}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
-                                E-Mail
-                                <span className="text-accent"> *</span>
+                                E-Mail<span className="text-accent"> *</span>
                             </label>
                             <input
                                 type="email"
@@ -164,11 +120,10 @@ const Register = () => {
                                 required
                             />
                         </div>
-                        {/* PHONE COUNTRY */}
+                        {/* PHONE */}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
-                                No. Hp
-                                <span className="text-accent"> *</span>
+                                No. Hp<span className="text-accent"> *</span>
                             </label>
                             <div className="phone-input-wrapper">
                                 <PhoneInput
@@ -177,7 +132,7 @@ const Register = () => {
                                     value={formData.phone}
                                     onChange={handlePhoneChange}
                                     placeholder="Masukkan nomor telepon"
-                                    className="custom-phone-input"
+                                    className="custom-phone-input w-full"
                                 />
                             </div>
                             <p className="text-xs text-gray-500 mt-1">
@@ -187,8 +142,7 @@ const Register = () => {
                         {/* PASSWORD */}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
-                                Kata Sandi
-                                <span className="text-accent"> *</span>
+                                Kata Sandi<span className="text-accent"> *</span>
                             </label>
                             <div className="relative">
                                 <input
@@ -205,19 +159,14 @@ const Register = () => {
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900 transition-colors"
                                 >
-                                    {showPassword ? (
-                                        <FaEye className="w-5 h-5" />
-                                    ) : (
-                                        <FaEyeSlash className="w-5 h-5" />
-                                    )}
+                                    {showPassword ? <FaEye className="w-5 h-5" /> : <FaEyeSlash className="w-5 h-5" />}
                                 </button>
                             </div>
                         </div>
                         {/* KONFIRMASI PASSWORD */}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-bold text-gray-900">
-                                Konfirmasi Kata Sandi
-                                <span className="text-accent"> *</span>
+                                Konfirmasi Kata Sandi<span className="text-accent"> *</span>
                             </label>
                             <div className="relative">
                                 <input
@@ -234,49 +183,32 @@ const Register = () => {
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900 transition-colors"
                                 >
-                                    {showConfirmPassword ? (
-                                        <FaEye className="w-5 h-5" />
-                                    ) : (
-                                        <FaEyeSlash className="w-5 h-5" />
-                                    )}
+                                    {showConfirmPassword ? <FaEye className="w-5 h-5" /> : <FaEyeSlash className="w-5 h-5" />}
                                 </button>
                             </div>
                         </div>
-                        <div className="text-right -mt-2">
-                            <Link
-                                to="/login"
-                                className="text-sm text-gray-600 hover:text-primary transition-colors underline"
-                            >
-                                Lupa Password?
+                        <div className="text-center text-sm text-gray-600 -mt-2">
+                            Sudah punya akun?{' '}
+                            <Link to="/login" className="text-primary font-bold hover:underline">
+                                Masuk di sini
                             </Link>
                         </div>
                         <button
                             type="submit"
-                            className="w-full py-3.5 px-6 bg-primary text-white rounded-xl text-base font-bold hover:bg-primary-dark hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(60,191,76,0.3)] transition-all"
+                            disabled={isLoading}
+                            className={`w-full py-3.5 px-6 bg-primary text-white rounded-xl text-base font-bold hover:bg-primary-dark hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(60,191,76,0.3)] transition-all flex items-center justify-center gap-2 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            Daftar
+                            {isLoading ? 'Mendaftarkan...' : 'Daftar Sekarang'}
                         </button>
-                        <Link
-                            to="/login"
-                            className="w-full py-3.5 px-6 bg-primary-light text-primary rounded-xl text-base font-bold hover:bg-[#d4f0d7] transition-all text-center"
-                        >
-                            Masuk
-                        </Link>
                         <div className="relative text-center my-2">
                             <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-200"></div>
-                            <span className="relative bg-white px-4 text-xs text-gray-400">
-                                atau
-                            </span>
+                            <span className="relative bg-white px-4 text-xs text-gray-400">atau</span>
                         </div>
                         <button
                             type="button"
                             className="w-full py-3.5 px-6 bg-white text-gray-900 border border-gray-200 rounded-xl text-base font-bold hover:bg-gray-50 hover:border-gray-600 transition-all flex items-center justify-center gap-2"
                         >
-                            <img
-                                src="https://www.google.com/favicon.ico"
-                                alt="Google"
-                                className="w-5 h-5"
-                            />
+                            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                             Daftar dengan Google
                         </button>
                     </form>
