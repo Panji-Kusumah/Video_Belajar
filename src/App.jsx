@@ -49,12 +49,11 @@ function App() {
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <ToastContainer
-                position="top-right"
-                autoClose={3000}
+                position="bottom-right"
+                autoClose={1000}
                 hideProgressBar={false}
                 newestOnTop
                 closeOnClick
-                pauseOnHover
                 theme="light"
             />
         </BrowserRouter>

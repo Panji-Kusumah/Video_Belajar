@@ -156,7 +156,6 @@ export const selectFilteredCourses = createSelector(
         } else if (coursesState.sortBy === 'z-a') {
             filtered = [...filtered].sort((a, b) => b.title.localeCompare(a.title));
         }
-
         return filtered;
     }
 );
