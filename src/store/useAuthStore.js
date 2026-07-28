@@ -71,22 +71,12 @@ const useAuthStore = create((set, get) => ({
             'registeredUsers',
             JSON.stringify(updatedUsers)
         );
-        const userData = {
-            email: newUser.email,
-            name: newUser.name,
-            phone: newUser.phone
-        };
-        localStorage.setItem(
-            'user',
-            JSON.stringify(userData)
-        );
         set({
-            user: userData,
             registeredUsers: updatedUsers
         });
         return {
             success: true,
-            message: 'Pendaftaran berhasil!'
+            message: 'Pendaftaran berhasil! Silakan login.'
         };
     },
     logout: () => {
