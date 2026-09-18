@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://be-video-belajar-production.up.railway.app/api/courses';
+const API_URL = 'be-video-belajar-production-b28b.up.railway.app';
 export const getCourses = async () => {
     const response = await axios.get(API_URL);
     return response.data.data || [];
